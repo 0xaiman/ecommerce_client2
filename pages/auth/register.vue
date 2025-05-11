@@ -7,6 +7,10 @@
         <input v-model="form.password" type="password" placeholder="Password" class="input mt-2" />
         <input v-model="form.password_confirmation" type="password" placeholder="Password Confirmation" class="input mt-2" />
         <button type="submit" class="btn mt-4">Register</button>
+        <p class="text-center mt-4">
+          Already have an account? 
+          <NuxtLink to="/auth/login" class="text-blue-600 hover:underline">Login here</NuxtLink>
+        </p>
       </form>
     </div>
   </template>

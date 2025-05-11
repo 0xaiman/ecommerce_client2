@@ -31,4 +31,13 @@ export const registerUser = async (form: RegisterForm) => {
   if (error.value) throw error.value;
   return data.value;
 };
+
+export const logoutUser = async () => {
+  const { data, error } = await useFetch('/api/logout', {
+    baseURL: 'http://localhost:8000',
+    method: 'POST',
+  });
+};
+
+
   
