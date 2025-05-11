@@ -4,7 +4,7 @@
   
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         <ProductCard
-          v-for="product in products"
+          v-for="product in products.data"
           :key="product.id"
           :product="product"
         />
@@ -14,12 +14,14 @@
   
   <script setup>
   import ProductCard from '~/components/ProductCard.vue';
+  import { useProductStore } from '~/stores/productStore';
+  import { storeToRefs } from 'pinia';
+
+  const productStore = useProductStore();
+  const { products, loading, error } = storeToRefs(productStore);
   
-  const products = Array.from({ length: 10 }, (_, i) => ({
-    id: i + 1,
-    name: `Product ${i + 1}`,
-    description: `This is a short description for Product ${i + 1}.`,
-    price: (Math.random() * 100 + 10).toFixed(2),
-  }));
+  onMounted(async () => {
+    await productStore.fetchProducts();
+  });
   </script>
   
