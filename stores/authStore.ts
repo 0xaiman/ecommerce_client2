@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-import { loginUser, registerUser } from '~/services/authService'
+import { ref, computed } from 'vue'
+import { loginUser, registerUser, logoutUser } from '~/services/authService'
 
 interface User {
   id: number
@@ -45,9 +46,15 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  const logout = () => {
-    user.value = null
-    token.value = null
+  const logout = async () => {
+    try {
+      await logoutUser()
+    } catch (e) {
+      console.error('Logout error:', e)
+    } finally {
+      user.value = null
+      token.value = null
+    }
   }
 
   return {

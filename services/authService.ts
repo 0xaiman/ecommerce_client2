@@ -10,33 +10,42 @@ interface RegisterForm {
   password_confirmation: string;
 }
 
-export const loginUser = async (form: LoginForm) => {
-    const { data, error } = await useFetch('/api/login', {
-      baseURL: 'http://localhost:8000',
-      method: 'POST',
-      body: form,
-    });
-  
-    if (error.value) throw error.value;
-    return data.value;
+interface AuthResponse {
+  user: {
+    id: number;
+    name: string;
+    email: string;
   };
-  
-export const registerUser = async (form: RegisterForm) => {
-  const { data, error } = await useFetch('/api/register', {
-    baseURL: 'http://localhost:8000',
-    method: 'POST',
-    body: form,
-  });
+  token: string;
+}
 
-  if (error.value) throw error.value;
-  return data.value;
+export const loginUser = async (form: LoginForm): Promise<AuthResponse> => {
+  try {
+    const { $axios } = useNuxtApp();
+    const { data } = await $axios.post('/login', form);
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Login failed');
+  }
 };
 
-export const logoutUser = async () => {
-  const { data, error } = await useFetch('/api/logout', {
-    baseURL: 'http://localhost:8000',
-    method: 'POST',
-  });
+export const registerUser = async (form: RegisterForm): Promise<AuthResponse> => {
+  try {
+    const { $axios } = useNuxtApp();
+    const { data } = await $axios.post('/register', form);
+    return data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || 'Registration failed');
+  }
+};
+
+export const logoutUser = async (): Promise<void> => {
+  try {
+    const { $axios } = useNuxtApp();
+    await $axios.post('/logout');
+  } catch (error: any) {
+    console.error('Logout error:', error);
+  }
 };
 
 
