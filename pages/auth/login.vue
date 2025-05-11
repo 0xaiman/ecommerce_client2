@@ -17,6 +17,10 @@
   <script setup>
   import { ref } from 'vue';
   import { useAuthStore } from '~/stores/authStore';
+
+  definePageMeta({
+  layout: 'default',
+})
   
   const auth = useAuthStore();
   const error = ref('');

@@ -17,6 +17,10 @@
   import { useProductStore } from '~/stores/productStore';
   import { storeToRefs } from 'pinia';
 
+  definePageMeta({
+  layout: 'default',
+})
+
   const productStore = useProductStore();
   const { products, loading, error } = storeToRefs(productStore);
   
