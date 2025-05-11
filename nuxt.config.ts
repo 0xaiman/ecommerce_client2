@@ -4,4 +4,5 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxtjs/tailwindcss','@pinia/nuxt'],
   pages: true,
+  plugins: ['~/plugins/axios.ts'],
 })
