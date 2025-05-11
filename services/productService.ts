@@ -21,7 +21,6 @@ export const getProduct = async (id: string | string[]): Promise<Product> => {
   try {
     const { $axios } = useNuxtApp();
     const { data } = await $axios.get(`/products/${id}`);
-    console.log('data', data);
     return data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || 'Failed to fetch product');
