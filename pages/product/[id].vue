@@ -29,7 +29,10 @@
 
           <p class="text-gray-700">Description: {{ product.description }}</p>
           <p class="text-4xl text-blue-600 font-bold">RM {{ product.price }}</p>
-          <button class="bg-blue-600 text-white px-4 py-2 rounded-md">
+          <button
+            class="bg-blue-600 text-white px-4 py-2 rounded-md"
+            @click="addToCart"
+          >
             Add to Cart
           </button>
         </div>
@@ -45,6 +48,7 @@ import { onMounted } from "vue";
 import { useProductStore } from "~/stores/productStore";
 import { storeToRefs } from "pinia";
 import StarRatings from "vue3-star-ratings";
+import { useCartStore } from "~/stores/cartStore";
 
 definePageMeta({
   layout: "default",
@@ -54,6 +58,12 @@ const route = useRoute();
 const productStore = useProductStore();
 const { currentProduct: product, loading, error } = storeToRefs(productStore);
 const rating = ref(4.5);
+const cartStore = useCartStore();
+
+const addToCart = () => {
+  cartStore.addToCart(product.value);
+  alert("Product added to cart!");
+};
 
 onMounted(() => {
   productStore.fetchProduct(route.params.id);
