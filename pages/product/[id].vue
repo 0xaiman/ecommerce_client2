@@ -61,7 +61,7 @@ const rating = ref(4.5);
 const cartStore = useCartStore();
 
 const addToCart = () => {
-  cartStore.addToCart(product.value);
+  cartStore.addToCart(product.value.id, 1);
   alert("Product added to cart!");
 };
 

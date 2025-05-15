@@ -22,31 +22,44 @@ interface AuthResponse {
 export const loginUser = async (form: LoginForm): Promise<AuthResponse> => {
   try {
     const { $axios } = useNuxtApp();
-    const { data } = await $axios.post('/login', form);
+
+    // 👇 Required before any login attempt
+    await $axios.get("/sanctum/csrf-cookie", { withCredentials: true });
+
+    const { data } = await $axios.post("/login", form, {
+      withCredentials: true, // 👈 send cookies
+    });
+
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Login failed');
+    throw new Error(error.response?.data?.message || "Login failed");
   }
 };
 
-export const registerUser = async (form: RegisterForm): Promise<AuthResponse> => {
+export const registerUser = async (
+  form: RegisterForm
+): Promise<AuthResponse> => {
   try {
     const { $axios } = useNuxtApp();
-    const { data } = await $axios.post('/register', form);
+
+    // 👇 Also needed here
+    await $axios.get("/sanctum/csrf-cookie", { withCredentials: true });
+
+    const { data } = await $axios.post("/register", form, {
+      withCredentials: true,
+    });
+
     return data;
   } catch (error: any) {
-    throw new Error(error.response?.data?.message || 'Registration failed');
+    throw new Error(error.response?.data?.message || "Registration failed");
   }
 };
 
 export const logoutUser = async (): Promise<void> => {
   try {
     const { $axios } = useNuxtApp();
-    await $axios.post('/logout');
+    await $axios.post("/logout", {}, { withCredentials: true });
   } catch (error: any) {
-    console.error('Logout error:', error);
+    console.error("Logout error:", error);
   }
 };
-
-
-  
